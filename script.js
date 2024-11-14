@@ -1,36 +1,27 @@
-// Инициализация переменных
-let currentImageIndex = 0;
-const images = document.querySelectorAll(".slider-image");
-const totalImages = images.length;
-const prevButton = document.getElementById("prevButton");
-const nextButton = document.getElementById("nextButton");
-const imageCounter = document.getElementById("imageCounter");
+// script.js
+document.addEventListener('DOMContentLoaded', function () {
+    const slides = document.querySelectorAll('.slide');
+    const prevButton = document.querySelector('.prev');
+    const nextButton = document.querySelector('.next');
+    const imageCounter = document.querySelector('.image-counter');
+    let currentIndex = 0;
 
-// Функция для обновления видимого изображения
-function updateSlider() {
-  // Скрыть все изображения
-  images.forEach((img, index) => {
-    img.classList.remove("active");
-    if (index === currentImageIndex) {
-      img.classList.add("active");
+    function updateSlide(index) {
+        slides.forEach((slide, i) => {
+            slide.style.display = i === index ? 'block' : 'none';
+        });
+        imageCounter.textContent = `Изображение ${index + 1} из ${slides.length}`;
     }
-  });
-  // Обновить счетчик изображений
-  imageCounter.textContent = `Изображение ${
-    currentImageIndex + 1
-  } из ${totalImages}`;
-}
 
-// Обработчики событий для кнопок
-prevButton.addEventListener("click", () => {
-  currentImageIndex = (currentImageIndex - 1 + totalImages) % totalImages;
-  updateSlider();
+    prevButton.addEventListener('click', () => {
+        currentIndex = (currentIndex === 0) ? slides.length - 1 : currentIndex - 1;
+        updateSlide(currentIndex);
+    });
+
+    nextButton.addEventListener('click', () => {
+        currentIndex = (currentIndex === slides.length - 1) ? 0 : currentIndex + 1;
+        updateSlide(currentIndex);
+    });
+
+    updateSlide(currentIndex);
 });
-
-nextButton.addEventListener("click", () => {
-  currentImageIndex = (currentImageIndex + 1) % totalImages;
-  updateSlider();
-});
-
-// Начальная инициализация
-updateSlider();
